@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1= title
+
+  //- Hardcode results array
+  -
+    const results = [
+      { device_name: 'Power Drill', model: 'PDX100', power_usage: 600 },
+      { device_name: 'Electric Saw', model: 'ES300', power_usage: 800 },
+      { device_name: 'Soldering Iron', model: 'SI50', power_usage: 50 }
+    ];
+
+  //- Outer container
+  .container-fluid
+    .row
+      //- Loop over each item in results, adding index to use for the buy function
+      each item, index in results
+        .col-sm-2(onclick=`buy(${index})`)  // Add onclick event here
+          h3 #{item.device_name}
+          p Model: #{item.model}
+          p Power Usage: #{item.power_usage}W
+
+  //- JavaScript function to handle the buy action
+  script.
+    function buy(index) {
+      alert(`You purchased item ${index}`);
+    }

@@ -1,0 +1,14 @@
+//- randomitem.pug
+extends layout
+
+block content
+  h1= title
+
+  //- Unbuffered JavaScript to create the list of images
+  - var image_names = ['image1.jpeg', 'image2.jpeg', 'image3.jpeg', 'image4.jpeg', 'image5.jpeg']
+  
+  //- Loop to display 3 random images
+  - for (var i = 0; i < 3; i++)
+    - var randomIndex = Math.floor(Math.random() * 5)
+    div
+      img(src=`/images/${image_names[randomIndex]}`, alt=`Random Image ${i+1}`, height="300", width="300")

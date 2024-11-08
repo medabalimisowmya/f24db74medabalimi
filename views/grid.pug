@@ -1,0 +1,24 @@
+//- grid.pug
+extends layout
+
+block content
+  h1= title
+  p Rows: #{query.rows}, Cols: #{query.cols}
+
+  //- Check if rows and cols are valid integers and within the range
+  - var rows = Number(query.rows);
+  - var cols = Number(query.cols);
+
+  //- Validation checks
+  - if (!Number.isInteger(rows) || !Number.isInteger(cols))
+    p Error: Rows and Columns must be integers.
+  - else if (rows < 3 || rows > 13 || cols < 3 || cols > 13)
+    p Error: Rows and Columns must be between 3 and 13.
+  - else
+    //- Generate the grid if everything is valid
+    table#outer(border="1")
+      tbody
+        - for (var i = 0; i < rows; i++)
+          tr#middle
+            - for (var j = 0; j < cols; j++)
+              td= i * i + j
