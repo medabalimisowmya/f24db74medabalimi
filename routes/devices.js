@@ -1,5 +1,3 @@
-// routes/devices.js
-
 var express = require('express');
 var router = express.Router();
 var Device = require('../models/device'); // Correct model import
@@ -16,5 +14,4 @@ router.get('/', async function(req, res, next) {
     res.status(500).send('Error fetching devices');
   }
 });
-
 module.exports = router;
