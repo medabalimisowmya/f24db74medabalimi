@@ -5,10 +5,10 @@ var router = express.Router();
 
 // Require controller modules
 var api_controller = require('../controllers/api');
-var device_controller = require('../controllers/devices');
+const device_controller = require('../controllers/devices');
 
 // API Route for listing resources
-router.get('/', api_controller.api);
+router.get('/', device_controller.device_view_all_Page );
 
 // DEVICE ROUTES
 router.post('/devices', device_controller.device_create_post); // Create a device

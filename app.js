@@ -22,6 +22,7 @@ var devicesRouter = require('./routes/devices'); // This is the correct route
 var gridRouter = require('./routes/grid');
 var randomItemRouter = require('./routes/pick');
 var resourceRouter = require('./routes/resource'); // Import the resource router
+var Device = require("./models/device");
 
 var app = express();
 
@@ -40,9 +41,10 @@ app.use('/users', usersRouter);
 app.use('/devices', devicesRouter);  // Correct route for devices
 app.use('/grid', gridRouter);
 app.use('/randomitem', randomItemRouter);
+app.use('/device',Device);
 
 // Add the resource route to handle CRUD operations for devices
-app.use('/resource', resourceRouter); // Use the resource router for all resource-related API endpoints
+app.use('/resource', resourceRouter); // U'e the resource router for all resource-related API endpoints
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -59,5 +61,37 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+// Function to seed the database
+async function recreateDB() {
+  // Delete everything in the collection
+  await Device.deleteMany();
+
+  // Data to seed
+  const results = [
+    { device_name: 'Power Drill', model: 'PDX100', power_usage: 600 },
+    { device_name: 'Electric Saw', model: 'ES300', power_usage: 800 },
+    { device_name: 'Soldering Iron', model: 'SI50', power_usage: 50 },
+    // Uncomment and modify as needed
+    // { device_name: 'XYZ', model: 'MNO', power_usage: 100 },
+  ];
+
+  // Insert data into the collection
+  results.forEach(async (data) => {
+    const instance = new Device(data);
+    try {
+      const doc = await instance.save();
+      console.log(`Saved: ${doc.device_name}`);
+    } catch (err) {
+      console.error(`Error saving ${data.device_name}:`, err.message);
+    }
+  });
+}
+
+// Check if reseeding is enabled
+let reseed = true;
+if (reseed) {
+  recreateDB();
+}
+
 
 module.exports = app;

@@ -10,25 +10,31 @@ exports.device_list = async function(req, res) {
     res.status(500).json({"error": `${err.message}`});
   }
 };
+// VIEWS
+// Handle a show all view
+exports.device_view_all_Page = async function(req, res) {
+  try{
+  thedevices = await device.find();
+  res.render('devices', { title: 'device Search Results', results: thedevices });
+  }
+  catch(err){
+  res.status(500);
+  res.send(`{"error": ${err}}`);
+  }
+  };
 
 // Detail for a specific device
 exports.device_detail = async function(req, res) {
+  console.log("detail" + req.params.id)
   try {
-    if (!req.params.id) {
-      return res.status(400).send('Device ID is required');
-    }
-
-    const device = await Device.findById(req.params.id).exec();
-    if (device) {
-      res.json(device);
-    } else {
-      res.status(404).send('Device not found');
-    }
-  } catch (err) {
-    console.error('Error fetching device details:', err);
-    res.status(500).json({"error": `${err.message}`});
+  result = await device.findById( req.params.id)
+  res.send(result)
+  } catch (error) {
+  res.status(500)
+  res.send(`{"error": document for id ${req.params.id} not found`);
   }
-};
+  };
+  
 
 // Handle device creation on POST
 exports.device_create_post = async function(req, res) {
@@ -37,7 +43,7 @@ exports.device_create_post = async function(req, res) {
   let device = new Device({
     device_name: req.body.device_name,
     model: req.body.model,
-    power: req.body.power
+    power_usage: req.body.power_usage
   });
 
   try {
@@ -55,6 +61,24 @@ exports.device_delete = function(req, res) {
 };
 
 // Handle device update on PUT
-exports.device_update_put = function(req, res) {
-  res.send('Device update PUT not implemented');
+// Handle Device update form on PUT
+exports.device_update_put = async function (req, res) {
+  console.log(`Received PUT request for id: ${req.params.id}`);
+  console.log('Request body:', req.body);
+
+  try {
+    let toUpdate = await Device.findById(req.params.id);
+    console.log('Found device:', toUpdate);
+
+    if (req.body.device_name) toUpdate.device_name = req.body.device_name;
+    if (req.body.model) toUpdate.model = req.body.model;
+    if (req.body.power_usage) toUpdate.power_usage = req.body.power_usage;
+
+    let result = await toUpdate.save();
+    console.log('Updated device:', result);
+    res.send(result);
+  } catch (err) {
+    console.error('Update error:', err);
+    res.status(500).send({ error: `${err}: Update for id ${req.params.id} failed` });
+  }
 };
