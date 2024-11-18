@@ -82,3 +82,39 @@ exports.device_update_put = async function (req, res) {
     res.status(500).send({ error: `${err}: Update for id ${req.params.id} failed` });
   }
 };
+// Handle device delete on DELETE.
+exports.device_delete = async function(req, res) {
+console.log("delete " + req.params.id)
+try {
+result = await Device.findByIdAndDelete( req.params.id)
+console.log("Removed " + result)
+res.send(result)
+} catch (err) {
+res.status(500)
+res.send(`{"error": Error deleting ${err}}`);
+}
+};
+exports.device_view_one_Page = async function(req, res) {
+  console.log("single view for ID " + req.query.id);
+  try {
+    result = await Device.findById(req.query.id);
+    res.render('devicedetail', { title: 'Device Detail', toShow: result });
+  } catch (err) {
+    res.status(500);
+    res.send(`{'error': '${err}'}`);
+  }
+};
+// Handle building the view for creating a device.
+// No body, no in path parameter, no query.
+// Does not need to be async
+exports.device_create_Page = function(req, res) {
+  console.log("create view")
+  try{
+  res.render('devicecreate', { title: 'device Create'});
+  }
+  catch(err){
+  res.status(500)
+  res.send(`{'error': '${err}'}`);
+  }
+  };
+  

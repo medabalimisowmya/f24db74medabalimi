@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  h1= title
+  form(id='deviceForm', action="/resource/devices", method="POST")
+    div.form-group
+      label.deviceAttr(for='device_name') Device type
+      input#device_name(type='text', name='device_name')
+    
+    div.form-group
+      label.deviceAttr(for='model') Device model
+      input#model(type='text', name='model')
+    
+    div.form-group
+      label.deviceAttr(for='power_usage') Device power usage
+      input#power_usage(type='number', name='power_usage')
+    
+    input(type="submit")
+
+  script.
+    document.forms['deviceForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      // TODO: Do something here to show user that form is being submitted
+      
+      fetch(event.target.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+      }).then((resp) => {
+        return resp.json(); // or resp.text() or whatever the server sends
+      }).then((body) => {
+        alert("Save succeeded");
+        // TODO: Handle body
+      }).catch((error) => {
+        // TODO: Handle error
+        alert("Save failed: " + error);
+      });
+    });

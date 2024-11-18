@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1= title
+  - let deviceid = toShow._id
+  - let device_name = toShow.device_name
+  - let devicemodel = toShow.model
+  - let devicepower_usage = toShow.power_usage
+
+  div
+    div.row
+      div(class='deviceAttr mr-3') device ID is:
+      div #{deviceid}
+
+  div
+    div.row
+      div(class='deviceAttr mr-3') device Type is:
+      div #{device_name}
+
+  div
+    div.row
+      div(class='deviceAttr mr-3') device Size is:
+      div #{devicemodel}
+
+  div
+    div.row
+      div(class='deviceAttr mr-3') device Cost is:
+      div #{devicepower_usage}
