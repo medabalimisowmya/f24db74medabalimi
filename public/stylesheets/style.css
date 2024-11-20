@@ -1,13 +1,49 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 a {
   color: #00B7FF;
+  text-decoration: none;
 }
+
+a:hover {
+  text-decoration: underline;
+}
+
 .deviceAttr {
   background-color: aquamarine;
-  width: 120px;
-  }
-  
+  width: 150px; /* Slightly larger width */
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px; /* Add rounded corners */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+}
+
+button.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+button.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+button.btn-secondary {
+  background-color: #7f8c8d;
+  color: white;
+}
+
+button.btn-secondary:hover {
+  background-color: #616a6b;
+}

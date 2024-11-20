@@ -94,40 +94,79 @@ res.status(500)
 res.send(`{"error": Error deleting ${err}}`);
 }
 };
-exports.device_view_one_Page = async function(req, res) {
-  console.log("single view for ID " + req.query.id);
-  try {
-    result = await Device.findById(req.query.id);
-    res.render('devicedetail', { title: 'Device Detail', toShow: result });
-  } catch (err) {
-    res.status(500);
-    res.send(`{'error': '${err}'}`);
-  }
-};
+// exports.device_view_one_Page = async function(req, res) {
+//   console.log("single view for ID " + req.query.id);
+//   try {
+//     result = await Device.findById(req.query.id);
+//     res.render('devicedetail', { title: 'Device Detail', toShow: result });
+//   } catch (err) {
+//     res.status(500);
+//     res.send(`{'error': '${err}'}`);
+//   }
+// };
 // Handle building the view for creating a device.
 // No body, no in path parameter, no query.
 // Does not need to be async
-exports.device_create_Page = function(req, res) {
-  console.log("create view")
+// exports.device_create_Page = function(req, res) {
+//   console.log("create view")
+//   try{
+//   res.render('devicecreate', { title: 'device Create'});
+//   }
+//   catch(err){
+//   res.status(500)
+//   res.send(`{'error': '${err}'}`);
+//   }
+//   };
+//   // Handle building the view for updating a device.
+// // query provides the id
+
+  
+// Handle a delete one view with id from query
+exports.device_delete_Page = async function(req, res) {
+  console.log("Delete view for id " + req.query.id)
   try{
-  res.render('devicecreate', { title: 'device Create'});
+  result = await Device.findById(req.query.id)
+  res.render('devicedelete', { title: 'device Delete', toShow: 
+ result });
   }
   catch(err){
   res.status(500)
   res.send(`{'error': '${err}'}`);
   }
-  };
-  // Handle building the view for updating a costume.
-// query provides the id
-exports.costume_update_Page = async function(req, res) {
-console.log("update view for item "+req.query.id)
-try{
-let result = await Costume.findById(req.query.id)
-res.render('costumeupdate', { title: 'Costume Update', toShow: result });
-}
-catch(err){
-res.status(500)
-res.send(`{'error': '${err}'}`);
-}
+ };
+
+ exports.device_view_one_Page = async function (req, res) {
+  console.log("Detail view for id " + req.query.id);
+  try {
+    let result = await Device.findById(req.query.id);
+    if (result == null) {
+      res.status(404).render("error", {
+        message: "Device not found",
+        error: { status: 404 },
+      });
+    } else {
+      res.render("devicedetail", { title: "Device Detail", toShow: result });
+    }
+  } catch (err) {
+    res.status(500);
+    res.send(`{'error': '${err}'}`);
+  }
 };
-  
+
+exports.device_update_Page = async function (req, res) {
+  console.log("Update view for id " + req.query.id);
+  try {
+    let result = await Device.findById(req.query.id);
+    if (result == null) {
+      res.status(404).render("error", {
+        message: "Device not found",
+        error: { status: 404 },
+      });
+    } else {
+      res.render("deviceupdate", { title: "Device Update", toShow: result });
+    }
+  } catch (err) {
+    res.status(500);
+    res.send(`{'error': '${err}'}`);
+  }
+};

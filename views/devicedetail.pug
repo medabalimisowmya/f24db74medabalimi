@@ -2,27 +2,22 @@ extends layout
 
 block content
   h1= title
-  - let deviceid = toShow._id
-  - let device_name = toShow.device_name
-  - let devicemodel = toShow.model
-  - let devicepower_usage = toShow.power_usage
 
-  div
+  if (toShow == null)
+    h2 No device found with the given ID
+  else
     div.row
-      div(class='deviceAttr mr-3') device ID is:
-      div #{deviceid}
+      div(class='deviceAttr') Device ID:
+      div #{toShow._id}
 
-  div
     div.row
-      div(class='deviceAttr mr-3') device Type is:
-      div #{device_name}
+      div(class='deviceAttr') Device Type:
+      div #{toShow.device_name}
 
-  div
     div.row
-      div(class='deviceAttr mr-3') device Size is:
-      div #{devicemodel}
+      div(class='deviceAttr') Device Power Usage:
+      div #{toShow.power_usage}
 
-  div
     div.row
-      div(class='deviceAttr mr-3') device Cost is:
-      div #{devicepower_usage}
+      div(class='deviceAttr') Device Model:
+      div #{toShow.model}

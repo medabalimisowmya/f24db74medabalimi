@@ -1,0 +1,50 @@
+extends layout
+
+block content
+  h1= title
+
+  - let deviceid = toShow._id
+  - let device_type = toShow.device_type
+  - let devicecost = toShow.cost
+  - let devicesize = toShow.size
+
+  div.row(class='mb-2')
+    div.mr-1 ID is
+    div #{deviceid}
+
+  - let actionid = "/resource/devices/" + deviceid
+  form(id='deviceForm', action=actionid, method="PUT")
+    div.form-group
+      label.deviceAttr(for='device_name') Device Type
+      input#device_name(type='text', name='device_name', value=device_type)
+
+    div.form-group
+      label.deviceAttr(for='model') Device Model
+      input#model(type='text', name='model', value=devicemodel)
+
+    div.form-group
+      label.deviceAttr(for='power_usage') Device Power Usage
+      input#power_usage(type='number', name='power_usage', value=power_usage)
+
+    input(type="submit")
+
+  script.
+    document.forms['deviceForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      // TODO: Show user that form is being submitted
+      fetch(event.target.action, {
+        method: 'PUT',
+        body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+      })
+      .then((resp) => {
+        return resp.json(); // or resp.text() or whatever the server sends
+      })
+      .then((body) => {
+        alert("Update succeeded");
+        // TODO: Handle response body
+      })
+      .catch((error) => {
+        // TODO: Handle error
+        alert("Update failed " + error);
+      });
+    });

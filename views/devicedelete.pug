@@ -1,0 +1,60 @@
+extends layout
+
+block content
+  h1= title
+
+  if (toShow == null)
+    h2 No instance to delete
+  else
+    - let deviceid = toShow._id
+    - let device_name = toShow.device_name
+    - let devicemodel = toShow.model
+    - let devicepower_usage = toShow.power_usage
+    - let actionid = "/resource/devices/" + deviceid
+    script.
+      let actionid = "#{actionid}";
+
+    div
+      div.row
+        div(class='deviceAttr mr-3') Device ID is:
+        div #{deviceid}
+
+      div.row
+        div(class='deviceAttr mr-3') Device Type is:
+        div #{device_name}
+
+      div.row
+        div(class='deviceAttr mr-3') Device Power Usage is:
+        div #{devicepower_usage}
+
+      div.row
+        div(class='deviceAttr mr-3') Device Model is:
+        div #{devicemodel}
+
+      button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+      button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+
+  script.
+    function cancel() {
+      // Go back to the home page for the device collection
+      window.location.href = '/devices';
+    }
+
+  script.
+    function deleteOnid() {
+      console.log("starting delete");
+      // Delete the device
+      fetch(actionid, {
+        method: 'DELETE' // No body needed for delete request
+      }).then((resp) => {
+        if (!resp.ok) throw new Error('Delete failed'); // Check for response success
+        return resp.json(); // Parse response
+      }).then((body) => {
+        alert("Delete succeeded");
+        window.location.href = '/devices';
+        // TODO: Handle body if necessary
+      }).catch((error) => {
+        // Handle errors
+        alert("Delete failed: " + error);
+      });
+    }
