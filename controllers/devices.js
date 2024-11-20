@@ -107,16 +107,16 @@ res.send(`{"error": Error deleting ${err}}`);
 // Handle building the view for creating a device.
 // No body, no in path parameter, no query.
 // Does not need to be async
-// exports.device_create_Page = function(req, res) {
-//   console.log("create view")
-//   try{
-//   res.render('devicecreate', { title: 'device Create'});
-//   }
-//   catch(err){
-//   res.status(500)
-//   res.send(`{'error': '${err}'}`);
-//   }
-//   };
+exports.device_create_Page = function(req, res) {
+  console.log("create view")
+  try{
+  res.render('devicecreate', { title: 'device Create'});
+  }
+  catch(err){
+  res.status(500)
+  res.send(`{'error': '${err}'}`);
+  }
+  };
 //   // Handle building the view for updating a device.
 // // query provides the id
 
