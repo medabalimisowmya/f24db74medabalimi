@@ -2,10 +2,10 @@ extends layout
 
 block content
   h1= title
-  p Welcome to Sowmya's Assigment Output.
+  p Welcome to Sowmya's Assignment Output.
   button(type="button", class="btn btn-secondary") Sample Button
   button(type="button", class="btn btn-primary", onclick="boost()") Press me
-  div#boost add in extra
+  div#boost Add in extra
   script.
     let value = 0;
     let amt = 3;
@@ -15,4 +15,14 @@ block content
       value += amt;
       document.getElementById("boost").textContent = `Boosted ${value} by ${amt}`;
     }
-  a(href="/devices") View Devices
+
+  if !user
+    a(href="/login") Login
+    br
+    a(href="/register") Register
+
+  if user
+    p You are currently logged in as #{user.username}
+    a(href="/devices") Take me to devices
+    br
+    a(href="/logout") Logout

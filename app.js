@@ -8,6 +8,33 @@ require('dotenv').config(); // Add this line to load environment variables
 var mongoose = require('mongoose'); // Add this line to require mongoose
 var connectionString = process.env.MONGO_CON; // Use your connection string from .env
 
+//passport
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+  Account.findOne({ username: username })
+  .then(function (user){
+  if (err) { return done(err); }
+  if (!user) {
+  return done(null, false, { message: 'Incorrect username.' });
+  }
+  if (!user.validPassword(password)) {
+  return done(null, false, { message: 'Incorrect password.' });
+  }
+  return done(null, user);
+  })
+  .catch(function(err){
+  return done(err)
+  })
+  })
+ )
+
 // Connect to MongoDB
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
@@ -36,6 +63,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+ }));
+ app.use(passport.initialize());
+ app.use(passport.session());
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/devices', devicesRouter);
@@ -46,6 +81,10 @@ app.use('/device',Device);
 
 // Add the resource route to handle CRUD operations for devices
 app.use('/resource', resourceRouter); // U'e the resource router for all resource-related API endpoints
+// passport config
+// Use the existing connection
+// The Account model 
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -93,6 +132,9 @@ let reseed = true;
 if (reseed) {
   recreateDB();
 }
+
+ 
+
 
 
 module.exports = app;

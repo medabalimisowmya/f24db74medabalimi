@@ -10,11 +10,12 @@ exports.device_list = async function(req, res) {
     res.status(500).json({"error": `${err.message}`});
   }
 };
-// VIEWS
+// VIEWS 
 // Handle a show all view
 exports.device_view_all_Page = async function(req, res) {
   try{
-  thedevices = await device.find();
+  thedevices = await Device.find();
+  console.log(thedevices);
   res.render('devices', { title: 'device Search Results', results: thedevices });
   }
   catch(err){
@@ -27,7 +28,7 @@ exports.device_view_all_Page = async function(req, res) {
 exports.device_detail = async function(req, res) {
   console.log("detail" + req.params.id)
   try {
-  result = await device.findById( req.params.id)
+  result = await Device.findById( req.params.id)
   res.send(result)
   } catch (error) {
   res.status(500)
