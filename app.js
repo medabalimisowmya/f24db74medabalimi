@@ -3,19 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-require('dotenv').config(); // Add this line to load environment variables
 
-var mongoose = require('mongoose'); // Add this line to require mongoose
-var connectionString = process.env.MONGO_CON; // Use your connection string from .env
 
 //passport
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var Account =require('./models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
-
 passport.use(new LocalStrategy(
   function(username, password, done) {
   Account.findOne({ username: username })
@@ -35,8 +27,14 @@ passport.use(new LocalStrategy(
   })
  )
 
+var mongoose = require('mongoose'); // Add this line to require mongoose
+require('dotenv').config();
+const connectionString = process.env.MONGO_CON; // Use your connection string from .env
+mongoose = require('mongoose');
+mongoose.connect(connectionString);
+
+
 // Connect to MongoDB
-mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
@@ -84,6 +82,11 @@ app.use('/resource', resourceRouter); // U'e the resource router for all resourc
 // passport config
 // Use the existing connection
 // The Account model 
+
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 
 // catch 404 and forward to error handler
