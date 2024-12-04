@@ -4,7 +4,7 @@ block content
   h1= title
 
   //- Hardcode results array
-  -
+  - 
     var results = [
       { device_name: 'Power Drill', model: 'PDX100', power_usage: 600 },
       { device_name: 'Electric Saw', model: 'ES300', power_usage: 800 },
@@ -13,16 +13,28 @@ block content
     ];
 
   //- Outer container
+
+
   .container-fluid
+  - let destinationCreate = `dispatch("/devices/create")`
+    button.btn(class="btn-primary ml-2 mr-2 mt-2", onclick=destinationCreate) Create
   .row 
+
     //- Loop over each item in results, adding index to use for the buy function
     each item, index in results
-      - let destination = `dispatch(\"/devices/update?id=${item._id}\")`
+      - let destinationUpdate = `dispatch(\"/devices/update?id=${item._id}\")`
+      - let destinationDelete = `dispatch("/devices/delete?id=${item._id}")`
+      - let destinationDetail = `dispatch("/devices/detail?id=${item._id}")`
+
       .col-sm-2(onclick=`buy(${index})`) // Add onclick event here
         h3 #{item.device_name}
         p Model: #{item.model}
         p Power Usage: #{item.power_usage}W
-        button.btn.btn-primary.ml-1(onclick=destination) Update
+        .button-group
+          button.btn(class="btn-primary ml-2 mr-2 mt-2", onclick=destinationUpdate) Update
+          button.btn(class="btn-primary ml-2 mr-2 mt-2", onclick=destinationDelete) Delete
+          button.btn(class="btn-primary ml-2 mr-2 mt-2", onclick=destinationDetail) Detail
+
 
   //- JavaScript function to handle the buy action
   script.

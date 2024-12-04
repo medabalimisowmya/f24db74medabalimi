@@ -113,7 +113,7 @@ async function recreateDB() {
   const results = [
     { device_name: 'Power Drill', model: 'PDX100', power_usage: 600 },
     { device_name: 'Electric Saw', model: 'ES300', power_usage: 800 },
-    { device_name: 'Soldering Iron', model: 'SI50', power_usage: 50 },
+    { device_name: 'Soldering Iron', model: 'SI50', power_usage: 450 },
     // Uncomment and modify as needed
     // { device_name: 'XYZ', model: 'MNO', power_usage: 100 },
   ];
